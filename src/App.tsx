@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Heading,
   Input,
@@ -12,12 +11,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-type TodoItem = {
-  id: string;
-  name: string;
-  isDone: boolean;
-  isEdit: boolean;
-};
+import { type TodoItem } from "./types/todoitem";
+import { TodoListItem } from "./components/todo/TodoItem";
 
 function App() {
   // state
@@ -142,51 +137,16 @@ function App() {
       <Box>
         <Heading size="lg">ToDo一覧</Heading>
         <List.Root listStyle="none">
-          {todoList.map((item) => {
-            // 編集フラグがtrueの時は編集用のフォームを表示
-            return item.isEdit ? (
-              <List.Item key={item.id} mb={5}>
-                <Flex alignItems="center">
-                  <Input
-                    defaultValue={item.name}
-                    onChange={(e) => setUpdateTodo(e.target.value)}
-                    mr={5}
-                  />
-                  <Button
-                    onClick={() => onClickUpdate(item.id)}
-                    colorPalette="teal"
-                  >
-                    保存
-                  </Button>
-                </Flex>
-              </List.Item>
-            ) : (
-              // 編集フラグがfalseの時は通常のTodoを表示
-              <List.Item key={item.id} mb={3}>
-                <Flex alignItems="center" gap={4}>
-                  <Checkbox.Root
-                    onCheckedChange={() => onCheckedChangeIsDone(item.id)}
-                  >
-                    <Checkbox.Control />
-                    <Checkbox.HiddenInput />
-                    <Checkbox.Label>{item.name}</Checkbox.Label>
-                  </Checkbox.Root>
-                  <Button
-                    onClick={() => onClickEdit(item.id)}
-                    colorPalette="yellow"
-                  >
-                    編集
-                  </Button>
-                  <Button
-                    onClick={() => onClickDelete(item.id)}
-                    colorPalette="red"
-                  >
-                    削除
-                  </Button>
-                </Flex>
-              </List.Item>
-            );
-          })}
+          {todoList.map((item) => (
+            <TodoListItem
+              item={item}
+              onClickUpdate={onClickUpdate}
+              onCheckedChangeIsDone={onCheckedChangeIsDone}
+              onClickEdit={onClickEdit}
+              onClickDelete={onClickDelete}
+              setUpdateTodo={setUpdateTodo}
+            />
+          ))}
         </List.Root>
       </Box>
     </>
