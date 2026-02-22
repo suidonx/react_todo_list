@@ -38,7 +38,10 @@ export const TodoListItem = (props: Props) => {
     // 編集フラグがfalseの時は通常のTodoを表示
     <List.Item key={item.id} mb={3}>
       <Flex alignItems="center" gap={4}>
-        <Checkbox.Root onCheckedChange={() => onChangeIsDoneTodo(item.id)}>
+        <Checkbox.Root
+          checked={item.isDone}
+          onCheckedChange={() => onChangeIsDoneTodo(item.id)}
+        >
           <Checkbox.Control />
           <Checkbox.HiddenInput />
           <Checkbox.Label>{item.name}</Checkbox.Label>
