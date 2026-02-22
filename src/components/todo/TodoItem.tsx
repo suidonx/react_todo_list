@@ -3,21 +3,21 @@ import { type TodoItem } from "../../types/todoitem";
 
 type Props = {
   item: TodoItem;
-  onClickUpdate: (id: string) => void;
-  onCheckedChangeIsDone: (id: string) => void;
-  onClickEdit: (id: string) => void;
-  onClickDelete: (id: string) => void;
-  setUpdateTodo: (updatedTodo: string) => void;
+  onUpdateTodo: (id: string) => void;
+  onChangeIsDoneTodo: (id: string) => void;
+  onEditTodo: (id: string) => void;
+  onDeleteTodo: (id: string) => void;
+  setEditedTodo: (editedTodo: string) => void;
 };
 
 export const TodoListItem = (props: Props) => {
   const {
     item,
-    onClickUpdate,
-    onCheckedChangeIsDone,
-    onClickEdit,
-    onClickDelete,
-    setUpdateTodo,
+    onUpdateTodo,
+    onChangeIsDoneTodo,
+    onEditTodo,
+    onDeleteTodo,
+    setEditedTodo,
   } = props;
 
   // 編集フラグがtrueの時は編集用のフォームを表示
@@ -26,10 +26,10 @@ export const TodoListItem = (props: Props) => {
       <Flex alignItems="center">
         <Input
           defaultValue={item.name}
-          onChange={(e) => setUpdateTodo(e.target.value)}
+          onChange={(e) => setEditedTodo(e.target.value)}
           mr={5}
         />
-        <Button onClick={() => onClickUpdate(item.id)} colorPalette="teal">
+        <Button onClick={() => onUpdateTodo(item.id)} colorPalette="teal">
           保存
         </Button>
       </Flex>
@@ -38,15 +38,15 @@ export const TodoListItem = (props: Props) => {
     // 編集フラグがfalseの時は通常のTodoを表示
     <List.Item key={item.id} mb={3}>
       <Flex alignItems="center" gap={4}>
-        <Checkbox.Root onCheckedChange={() => onCheckedChangeIsDone(item.id)}>
+        <Checkbox.Root onCheckedChange={() => onChangeIsDoneTodo(item.id)}>
           <Checkbox.Control />
           <Checkbox.HiddenInput />
           <Checkbox.Label>{item.name}</Checkbox.Label>
         </Checkbox.Root>
-        <Button onClick={() => onClickEdit(item.id)} colorPalette="yellow">
+        <Button onClick={() => onEditTodo(item.id)} colorPalette="yellow">
           編集
         </Button>
-        <Button onClick={() => onClickDelete(item.id)} colorPalette="red">
+        <Button onClick={() => onDeleteTodo(item.id)} colorPalette="red">
           削除
         </Button>
       </Flex>

@@ -13,92 +13,31 @@ import {
 
 import { type TodoItem } from "./types/todoitem";
 import { TodoListItem } from "./components/todo/TodoItem";
+import { useTodo } from "./hooks/useTodo";
 
 function App() {
   // state
-  const [newTodoItem, setNewTodoItem] = useState("");
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
-  const [updateTodo, setUpdateTodo] = useState("");
+  const [editedTodo, setEditedTodo] = useState("");
+  const [newTodoItem, setNewTodoItem] = useState("");
 
-  // Todoに追加したタスクを条件ごとに集計する関数
-  const countTask = () => {
-    return {
-      total: todoList.length,
-      done: todoList.filter((todo) => todo.isDone).length,
-      todo: todoList.filter((todo) => !todo.isDone).length,
-    };
-  };
+  const {
+    countTask,
+    addTodo,
+    updateTodo,
+    changeIsDoneTodo,
+    editTodo,
+    deleteTodo,
+  } = useTodo(
+    todoList,
+    setTodoList,
+    editedTodo,
+    setEditedTodo,
+    newTodoItem,
+    setNewTodoItem,
+  );
+
   const status = countTask();
-
-  // Create
-  // オブジェクトを生成してTodo Listに追加する
-  const onClickAdd = () => {
-    const uuid = self.crypto.randomUUID();
-
-    const addTodoItem = {
-      id: uuid,
-      name: newTodoItem,
-      isDone: false,
-      isEdit: false,
-    };
-    const copiedTodoList = [...todoList, addTodoItem];
-
-    setTodoList(copiedTodoList);
-    setNewTodoItem("");
-  };
-
-  // Read
-  // チェックボックスをクリックした時、タスクが完了状態かどうかを判定する
-  // 現在の状態と反対の状態に更新する
-  const onCheckedChangeIsDone = (id: string) => {
-    const copiedTodoList = [...todoList];
-    const newTodoList = copiedTodoList.map((todo) => {
-      if (todo.id === id) {
-        const isDoneTodo = todo.isDone;
-        todo.isDone = !isDoneTodo;
-      }
-      return todo;
-    });
-
-    setTodoList(newTodoList);
-  };
-
-  // Update
-  // 編集完了後に保存ボタンをクリックしたとき、Todo Listを更新する
-  const onClickUpdate = (id: string) => {
-    const copiedTodoList = [...todoList];
-    const newTodoList = copiedTodoList.map((todo) => {
-      if (todo.id === id) {
-        todo.name = updateTodo;
-        todo.isEdit = false;
-      }
-      return todo;
-    });
-    setTodoList(newTodoList);
-  };
-
-  // 編集ボタンをクリックした時、そのTodoの編集フラグをtrueにする
-  const onClickEdit = (id: string) => {
-    const copiedTodoList = [...todoList];
-    const newTodoList = copiedTodoList.map((todo) => {
-      if (todo.id === id) {
-        todo.isEdit = true;
-        setUpdateTodo(todo.name); // 初期値をupdate用のstateに保存
-      }
-      return todo;
-    });
-    setTodoList(newTodoList);
-  };
-
-  // Delete
-  // 削除ボタンをクリックしたとき、該当のTodoを削除する
-  const onClickDelete = (id: string) => {
-    if (confirm("本当によろしいですか？")) {
-      const copiedTodoList = [...todoList];
-      const newTodoList = copiedTodoList.filter((todo) => todo.id !== id);
-      setTodoList(newTodoList);
-    }
-  };
 
   return (
     <>
@@ -125,7 +64,7 @@ function App() {
             mr={5}
           />
           <Button
-            onClick={onClickAdd}
+            onClick={addTodo}
             disabled={newTodoItem === ""}
             colorPalette="cyan"
           >
@@ -140,11 +79,11 @@ function App() {
           {todoList.map((item) => (
             <TodoListItem
               item={item}
-              onClickUpdate={onClickUpdate}
-              onCheckedChangeIsDone={onCheckedChangeIsDone}
-              onClickEdit={onClickEdit}
-              onClickDelete={onClickDelete}
-              setUpdateTodo={setUpdateTodo}
+              onUpdateTodo={updateTodo}
+              onChangeIsDoneTodo={changeIsDoneTodo}
+              onEditTodo={editTodo}
+              onDeleteTodo={deleteTodo}
+              setEditedTodo={setEditedTodo}
             />
           ))}
         </List.Root>
