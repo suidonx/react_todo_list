@@ -69,6 +69,7 @@ function App() {
         <List.Root listStyle="none">
           {todoList.map((item) => (
             <TodoListItem
+              key={item.id}
               item={item}
               onUpdateTodo={updateTodo}
               onChangeIsDoneTodo={changeIsDoneTodo}
