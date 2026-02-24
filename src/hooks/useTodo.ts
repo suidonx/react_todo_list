@@ -1,13 +1,11 @@
+import { useState } from "react";
 import type { TodoItem } from "../types/todoitem";
 
-export const useTodo = (
-  todoList: TodoItem[],
-  setTodoList: (todoList: TodoItem[]) => void,
-  editedTodo: string,
-  setEditedTodo: (editedTodo: string) => void,
-  newTodoItem: string,
-  setNewTodoItem: (newTodoItem: string) => void,
-) => {
+export const useTodo = () => {
+  const [todoList, setTodoList] = useState<TodoItem[]>([]);
+  const [editedTodo, setEditedTodo] = useState("");
+  const [newTodoItem, setNewTodoItem] = useState("");
+
   // Todoに追加したタスクを条件ごとに集計する関数
   const countTask = () => {
     return {
@@ -86,6 +84,12 @@ export const useTodo = (
   };
 
   return {
+    todoList,
+    setTodoList,
+    editedTodo,
+    setEditedTodo,
+    newTodoItem,
+    setNewTodoItem,
     countTask,
     addTodo,
     updateTodo,

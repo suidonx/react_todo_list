@@ -1,6 +1,5 @@
 import "./App.css";
 
-import { useState } from "react";
 import {
   Box,
   Button,
@@ -11,31 +10,23 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { type TodoItem } from "./types/todoitem";
 import { TodoListItem } from "./components/todo/TodoItem";
 import { useTodo } from "./hooks/useTodo";
 
 function App() {
   // state
-  const [todoList, setTodoList] = useState<TodoItem[]>([]);
-  const [editedTodo, setEditedTodo] = useState("");
-  const [newTodoItem, setNewTodoItem] = useState("");
-
   const {
+    todoList,
+    setEditedTodo,
+    newTodoItem,
+    setNewTodoItem,
     countTask,
     addTodo,
     updateTodo,
     changeIsDoneTodo,
     editTodo,
     deleteTodo,
-  } = useTodo(
-    todoList,
-    setTodoList,
-    editedTodo,
-    setEditedTodo,
-    newTodoItem,
-    setNewTodoItem,
-  );
+  } = useTodo();
 
   const status = countTask();
 
