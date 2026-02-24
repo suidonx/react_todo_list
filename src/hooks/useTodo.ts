@@ -3,7 +3,7 @@ import type { TodoItem } from "../types/todoitem";
 
 export const useTodo = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
-  const [editedTodo, setEditedTodo] = useState("");
+  const [editedTodoText, setEditedTodoText] = useState("");
   const [newTodoItem, setNewTodoItem] = useState("");
 
   // Todoに追加したタスクを条件ごとに集計する関数
@@ -37,7 +37,7 @@ export const useTodo = () => {
 
     const newTodoList = copiedTodoList.map((todo: TodoItem) => {
       if (todo.id === id) {
-        todo.name = editedTodo;
+        todo.name = editedTodoText;
         todo.isEdit = false;
       }
       return todo;
@@ -67,7 +67,7 @@ export const useTodo = () => {
     const newTodoList = copiedTodoList.map((todo) => {
       if (todo.id === id) {
         todo.isEdit = true;
-        setEditedTodo(todo.name); // 初期値をupdate用のstateに保存
+        setEditedTodoText(todo.name); // 初期値をupdate用のstateに保存
       }
       return todo;
     });
@@ -86,8 +86,8 @@ export const useTodo = () => {
   return {
     todoList,
     setTodoList,
-    editedTodo,
-    setEditedTodo,
+    editedTodoText,
+    setEditedTodoText,
     newTodoItem,
     setNewTodoItem,
     countTask,

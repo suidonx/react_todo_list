@@ -17,7 +17,7 @@ function App() {
   // state
   const {
     todoList,
-    setEditedTodo,
+    setEditedTodoText,
     newTodoItem,
     setNewTodoItem,
     countTask,
@@ -75,7 +75,7 @@ function App() {
               onChangeIsDoneTodo={changeIsDoneTodo}
               onEditTodo={editTodo}
               onDeleteTodo={deleteTodo}
-              setEditedTodo={setEditedTodo}
+              setEditedTodoText={setEditedTodoText}
             />
           ))}
         </List.Root>

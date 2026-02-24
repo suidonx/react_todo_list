@@ -7,7 +7,7 @@ type Props = {
   onChangeIsDoneTodo: (id: string) => void;
   onEditTodo: (id: string) => void;
   onDeleteTodo: (id: string) => void;
-  setEditedTodo: (editedTodo: string) => void;
+  setEditedTodoText: (editedTodo: string) => void;
 };
 
 export const TodoListItem = (props: Props) => {
@@ -17,7 +17,7 @@ export const TodoListItem = (props: Props) => {
     onChangeIsDoneTodo,
     onEditTodo,
     onDeleteTodo,
-    setEditedTodo,
+    setEditedTodoText,
   } = props;
 
   // 編集フラグがtrueの時は編集用のフォームを表示
@@ -26,7 +26,7 @@ export const TodoListItem = (props: Props) => {
       <Flex alignItems="center">
         <Input
           defaultValue={item.name}
-          onChange={(e) => setEditedTodo(e.target.value)}
+          onChange={(e) => setEditedTodoText(e.target.value)}
           mr={5}
         />
         <Button onClick={() => onUpdateTodo(item.id)} colorPalette="teal">
