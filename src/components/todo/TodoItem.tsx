@@ -3,21 +3,19 @@ import { type TodoItem } from "../../types/todoitem";
 
 type Props = {
   item: TodoItem;
-  onUpdateTodo: (id: string) => void;
+  onUpdateTodo: (id: string, value: string) => void;
+  onChangeIsEditTodo: (id: string) => void;
   onChangeIsDoneTodo: (id: string) => void;
-  onEditTodo: (id: string) => void;
   onDeleteTodo: (id: string) => void;
-  setEditedTodoText: (editedTodo: string) => void;
 };
 
 export const TodoListItem = (props: Props) => {
   const {
     item,
     onUpdateTodo,
+    onChangeIsEditTodo,
     onChangeIsDoneTodo,
-    onEditTodo,
     onDeleteTodo,
-    setEditedTodoText,
   } = props;
 
   // 編集フラグがtrueの時は編集用のフォームを表示
@@ -25,11 +23,15 @@ export const TodoListItem = (props: Props) => {
     <List.Item key={item.id} mb={5}>
       <Flex alignItems="center">
         <Input
-          defaultValue={item.name}
-          onChange={(e) => setEditedTodoText(e.target.value)}
+          value={item.name}
+          onChange={(e) => onUpdateTodo(item.id, e.target.value)}
           mr={5}
         />
-        <Button onClick={() => onUpdateTodo(item.id)} colorPalette="teal">
+        <Button
+          onClick={() => onChangeIsEditTodo(item.id)}
+          disabled={item.name === "" ? true : false} // 入力フォームが空の時、保存できない処理
+          colorPalette="teal"
+        >
           保存
         </Button>
       </Flex>
@@ -46,7 +48,10 @@ export const TodoListItem = (props: Props) => {
           <Checkbox.HiddenInput />
           <Checkbox.Label>{item.name}</Checkbox.Label>
         </Checkbox.Root>
-        <Button onClick={() => onEditTodo(item.id)} colorPalette="yellow">
+        <Button
+          onClick={() => onChangeIsEditTodo(item.id)}
+          colorPalette="yellow"
+        >
           編集
         </Button>
         <Button onClick={() => onDeleteTodo(item.id)} colorPalette="red">

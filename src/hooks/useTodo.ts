@@ -3,7 +3,6 @@ import type { TodoItem } from "../types/todoitem";
 
 export const useTodo = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
-  const [editedTodoText, setEditedTodoText] = useState("");
   const [newTodoItem, setNewTodoItem] = useState("");
 
   // Todoに追加したタスクを条件ごとに集計する関数
@@ -15,8 +14,8 @@ export const useTodo = () => {
     };
   };
 
+  // オブジェクトを生成してTodo Listに追加する
   const addTodo = () => {
-    // オブジェクトを生成してTodo Listに追加する
     const uuid = self.crypto.randomUUID();
 
     const addTodoItem = {
@@ -31,18 +30,29 @@ export const useTodo = () => {
     setNewTodoItem("");
   };
 
-  // 編集完了後に保存ボタンをクリックしたとき、Todo Listを更新する
-  const updateTodo = (id: string) => {
+  // Todoの名前をvalueに更新する
+  const updateTodo = (id: string, value: string) => {
     const copiedTodoList = [...todoList];
 
     const newTodoList = copiedTodoList.map((todo: TodoItem) => {
       if (todo.id === id) {
-        todo.name = editedTodoText;
-        todo.isEdit = false;
+        todo.name = value;
       }
       return todo;
     });
+    setTodoList(newTodoList);
+  };
 
+  // 編集フラグを切り替える処理
+  const changeIsEditTodo = (id: string) => {
+    const copiedTodoList = [...todoList];
+
+    const newTodoList = copiedTodoList.map((todo: TodoItem) => {
+      if (todo.id === id) {
+        todo.isEdit = !todo.isEdit;
+      }
+      return todo;
+    });
     setTodoList(newTodoList);
   };
 
@@ -61,19 +71,6 @@ export const useTodo = () => {
     setTodoList(newTodoList);
   };
 
-  // 編集ボタンをクリックした時、そのTodoの編集フラグをtrueにする
-  const editTodo = (id: string) => {
-    const copiedTodoList = [...todoList];
-    const newTodoList = copiedTodoList.map((todo) => {
-      if (todo.id === id) {
-        todo.isEdit = true;
-        setEditedTodoText(todo.name); // 初期値をupdate用のstateに保存
-      }
-      return todo;
-    });
-    setTodoList(newTodoList);
-  };
-
   // 削除ボタンをクリックしたとき、該当のTodoを削除する
   const deleteTodo = (id: string) => {
     if (confirm("本当によろしいですか？")) {
@@ -86,15 +83,13 @@ export const useTodo = () => {
   return {
     todoList,
     setTodoList,
-    editedTodoText,
-    setEditedTodoText,
     newTodoItem,
     setNewTodoItem,
     countTask,
     addTodo,
     updateTodo,
+    changeIsEditTodo,
     changeIsDoneTodo,
-    editTodo,
     deleteTodo,
   };
 };

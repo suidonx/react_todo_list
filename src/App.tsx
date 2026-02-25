@@ -17,14 +17,13 @@ function App() {
   // state
   const {
     todoList,
-    setEditedTodoText,
     newTodoItem,
     setNewTodoItem,
     countTask,
     addTodo,
+    changeIsEditTodo,
     updateTodo,
     changeIsDoneTodo,
-    editTodo,
     deleteTodo,
   } = useTodo();
 
@@ -72,10 +71,9 @@ function App() {
               key={item.id}
               item={item}
               onUpdateTodo={updateTodo}
+              onChangeIsEditTodo={changeIsEditTodo}
               onChangeIsDoneTodo={changeIsDoneTodo}
-              onEditTodo={editTodo}
               onDeleteTodo={deleteTodo}
-              setEditedTodoText={setEditedTodoText}
             />
           ))}
         </List.Root>
